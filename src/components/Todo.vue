@@ -51,7 +51,7 @@ const totalTasks = computed(() => todos.value.length);
         <div class="mt-9">
             <div class="tasks-content">
                 <div class="task" v-for="todo in todos" :key="todo.id">
-                    <Tasks :todo="todo" @update-todo="updateTodo" @remove-todo="removeTodo" @toggle-complete="toggleComplete"/>
+                    <Tasks :todo="todo" @update-todo="updateTodo" @remove-todo="removeTodo" @toggle-complete="toggleComplete" />
                 </div>
             </div>
 
