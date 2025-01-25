@@ -4,7 +4,7 @@ import Tasks from './Tasks.vue';
 const task = ref('');
 const todos = ref([]);
 const filter = ref('all'); // Estado inicial do filtro
-const isCompleted = ref(false)
+
 let genId = 1;
 
 const addTodo = () => {
@@ -18,12 +18,7 @@ const filteredTodos = computed(() => {
     if (filter.value === 'active') return todos.value.filter(todo => !todo.completed);
     if (filter.value === 'completed') return todos.value.filter(todo => todo.completed);
 });
-const updateTodo = (updatedTodo) => {
-    const index = todos.value.findIndex(todo => todo.id === updatedTodo.id);
-    if (index !== -1) {
-        todos.value[index] = updatedTodo;
-    }
-};
+
 const removeTodo = id => {
     todos.value = todos.value.filter(todo => todo.id !== id);
 };
@@ -50,7 +45,7 @@ const totalTasks = computed(() => todos.value.length);
         </div>
         <div class="mt-9">
             <div class="tasks-content">
-                <div class="task" v-for="todo in todos" :key="todo.id">
+                <div class="task" v-for="todo in filteredTodos" :key="todo.id">
                     <Tasks :todo="todo" @update-todo="updateTodo" @remove-todo="removeTodo" @toggle-complete="toggleComplete" />
                 </div>
             </div>

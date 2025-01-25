@@ -6,29 +6,29 @@ const props = defineProps({
         required: true
     }
 });
-const emit = defineEmits(['update-todo', 'remove-todo']); // Declare an emit for updating todo
+const emit = defineEmits([ 'remove-todo', 'toggle-complete']); // Declare an emit for updating todo
 const selected = ref(false);
 
-const toggle = () =>{
-    selected.value = !selected.value
-    emit('update-todo', { ...props.todo, completed: !props.todo.completed });
-};
+
 
 const handleRemove = ( id)=>{
     emit('remove-todo', id)
 };
+const toggle = () =>{
+    emit('toggle-complete', props.todo.id);
+}
 </script>
 
 <template>
   
     <div class="btn">
-        <button :class="selected ? 'btn-check' : 'btn-unchecked '" @click="toggle()">
-            <img v-if="selected" src="../../public/images/icon-check.svg" />
+        <button :class="todo.completed ? 'btn-check' : 'btn-unchecked '" @click="toggle()">
+            <img v-if="todo.completed" src="../../public/images/icon-check.svg" />
         </button>
     </div>
 
     <div class="title" >
-        <p :class="selected ?  'text-decoration-line-through' : ''">{{ todo.text }}</p>
+        <p :class="todo.completed ?  'text-decoration-line-through' : ''">{{ todo.text }}</p>
     </div>
     <div class="btn-del">
         <button @click="handleRemove(todo.id)">
