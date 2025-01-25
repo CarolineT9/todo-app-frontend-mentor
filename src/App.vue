@@ -1,109 +1,122 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useTheme } from 'vuetify';
 import Todo from './components/Todo.vue';
+
 const theme = useTheme();
 
-const currentImage = ref("");
-const icon = ref("images/icon-sun.svg")
-const updateImg = () => {
-  const isMobile = window.innerWidth < 768;
-  const isDark = theme.global.current.value.dark;
+const currentImage = ref('');
+const icon = ref('');
+const windowWidth = ref(window.innerWidth);
 
-  if (isDark) {
-    currentImage.value = isMobile ? "/images/bg-mobile-dark.jpg" : "/images/bg-desktop-dark.jpg";
-    icon.value = "/images/icon-sun.svg"; // Ícone de sol para o tema escuro
+const isDark = computed(() => theme.global.current.value.dark);
+const isMobile = computed(() => windowWidth.value < 768);
+
+const updateImg = () => {
+  if (isDark.value) {
+    currentImage.value = isMobile.value ? '/images/bg-mobile-dark.jpg' : '/images/bg-desktop-dark.jpg';
+    icon.value = '/images/icon-sun.svg'; // Ícone de sol para o tema escuro
   } else {
-    currentImage.value = isMobile ? "/images/bg-mobile-light.jpg" : "/images/bg-desktop-light.jpg";
-    icon.value = "/images/icon-moon.svg"; // Ícone de lua para o tema claro
+    currentImage.value = isMobile.value ? '/images/bg-mobile-light.jpg' : '/images/bg-desktop-light.jpg';
+    icon.value = '/images/icon-moon.svg'; // Ícone de lua para o tema claro
   }
 };
 
+
 const toggleTheme = () => {
-  theme.global.current.value.dark = !theme.global.current.value.dark
-  updateImg()
-}
+  theme.global.name.value = isDark.value ? 'myCustomLightTheme' : 'myCustomDarkTheme';
+};
+
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+
+watch([isDark, isMobile], updateImg, { immediate: true });
 
 onMounted(() => {
   updateImg();
-  window.addEventListener("resize", updateImg); // Detecta redimensionamento
+  window.addEventListener('resize', updateWindowWidth);
 });
 
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateImg);
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowWidth);
 });
 </script>
-<template>
-  <div class="top-container">
-    <div class="circle"></div>
-    <img class="img-bg" :src="currentImage" alt="background">
-  </div>
 
-  <main>
-    <div class="header-container">
-      <h1>TODO</h1>
-      <transition class="fade">
-        <img @click="toggleTheme" :src="icon" alt="" class="cursor-pointer">
-      </transition>
+<template>
+  <main :class="isDark ? 'bg-veryDarkBlue': 'bg-veryLightGrayBlue'">
+    <div class="background-container">
+      <img 
+        :src="currentImage" 
+        alt="Background"
+        class="img-background"
+      />
     </div>
-    <Todo></Todo>
-    <div class="footer">
-      <p>Drag and drop to reorder list.</p>
+    <div class="todo-area">
+      <div class="todo">
+        <h1 :class="isDark ? 'lightGrayishHover' : 'text-veryDarkGrayishBlue'">
+          TODO
+        </h1>
+        <img 
+          @click="toggleTheme" 
+          :src="icon" 
+          alt="Toggle Theme Icon" 
+          class="cursor-pointer" 
+        />
+
+        
+      </div>
+      <Todo></Todo>
     </div>
-    
   </main>
 </template>
+
 <style scoped>
-.top-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: -1;
-}
-
 main {
-  width: 100%;
+  width: 100vw;
   margin: 0;
-  max-height: 100dvh;
-
+  height: 100vh;
+  transition: background-color 0.3s ease;
 }
 
-.header-container {
-
-  width: 100%;
+.background-container {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-around;
-  margin-top: 5rem;
-}
-
-.header-container h1 {
-  font-size: 1.8rem;
-  letter-spacing: 1.6rem;
-}
-
-.img-bg {
-  object-fit: cover;
-  transition: opacity 1s;
+  justify-content: center;
   width: 100%;
-  height: 300px;
+  height: 350px;
+}
+
+img {
+  width: 28px;
+  height: 28px;
+  margin-top: .1rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  letter-spacing: 1rem;
+}
+
+.todo-area {
+  width: 90%;
+  margin: auto;
+  position: relative;
+  top: -250px;
   
 }
 
-.footer{
-  letter-spacing: -0.2px;
-  line-height: 1.75rem;
-  text-align: center;
+.todo {
+  display: flex;
+  justify-content: space-between;
 }
-.footer p{
-  margin-bottom: 1rem;
-}
-@media(min-width: 768px) {
-  .header-container h1 {
-    font-size: 2.25rem;
 
-  }
+.img-background {
+  width: 100%;
+  height: 230px;
+  margin-bottom: 130px;
 }
 </style>

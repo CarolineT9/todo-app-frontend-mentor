@@ -1,5 +1,8 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, computed } from 'vue';
+import { useTheme } from 'vuetify';
+const theme = useTheme();
+const isDark = computed(() => theme.global.current.value.dark);
 const props = defineProps({
     todo: {
         type: Object,
@@ -28,7 +31,7 @@ const toggle = () =>{
     </div>
 
     <div class="title" >
-        <p :class="todo.completed ?  'text-decoration-line-through' : ''">{{ todo.text }}</p>
+        <p  :class="todo.completed ?  'text-decoration-line-through' : ''"><span :class="isDark ? 'text-lightGrayishBlue':'text-veryDarkGrayishBlue'">{{ todo.text }}</span></p>
     </div>
     <div class="btn-del">
         <button @click="handleRemove(todo.id)">
@@ -47,7 +50,7 @@ const toggle = () =>{
     display: flex;
     align-items: center;
     height: 50px;
-    width: 100px;
+    width: 80px;
 
 }
 
@@ -55,26 +58,29 @@ const toggle = () =>{
     display: flex;
     align-items: center;
     height: 50px;
-    width: 100px;
+    width: 80px;
+    margin-right: -40px;
 
 }
 
 .title {
-    color: hsl(236, 9%, 61%);
-    width: 700px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-left: -10px;
+    width: 100%;
 
 }
 
 button {
-    width: 35px;
-    height: 35px;
-    border-radius: 35px;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
 
 }
 
 img {
-    width: 20px;
-    margin-bottom: 5px;
+    width: 16px;
+    margin-bottom: 13px;
 }
 
 .btn-check {
@@ -83,9 +89,20 @@ img {
 
 
 .btn-unchecked {
-    width: 35px;
-    height: 35px;
-    border-radius: 35px;
-    border: 1px solid hsl(236, 9%, 61%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%; /* Botão circular */
+  border: 1px solid hsl(236, 9%, 61%); /* Cor inicial da borda */
+  background: transparent; /* Fundo transparente */
+  position: relative;
+  overflow: hidden; /* Garante que o gradiente não extrapole */
+  transition: border-color 0.3s ease, background 0.3s ease; /* Suave transição */
+}
+
+.btn-unchecked:hover {
+  border: 2px solid transparent; /* Faz a borda "desaparecer" momentaneamente */
+  border-color: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%)); /* Gradiente */
+  background-origin: border-box; /* Aplica o gradiente na borda */
+  background-clip: padding-box, border-box; /* O gradiente aparece na borda */
 }
 </style>
