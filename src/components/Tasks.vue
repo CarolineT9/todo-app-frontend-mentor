@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits, computed } from 'vue';
+import { ref, defineEmits,computed } from 'vue';
 import { useTheme } from 'vuetify';
 const theme = useTheme();
 const isDark = computed(() => theme.global.current.value.dark);
@@ -9,29 +9,33 @@ const props = defineProps({
         required: true
     }
 });
-const emit = defineEmits([ 'remove-todo', 'toggle-complete']); // Declare an emit for updating todo
+const emit = defineEmits(['update-todo', 'remove-todo', 'toggleomplete']); // Declare an emit for updating todo
 const selected = ref(false);
 
-
+const toggle = () =>{
+    selected.value = !selected.value
+    emit('update-todo', { ...props.todo, completed: !props.todo.completed });
+};
 
 const handleRemove = ( id)=>{
     emit('remove-todo', id)
 };
-const toggle = () =>{
-    emit('toggle-complete', props.todo.id);
-}
 </script>
 
 <template>
   
     <div class="btn">
-        <button :class="todo.completed ? 'btn-check' : 'btn-unchecked '" @click="toggle()">
-            <img v-if="todo.completed" src="../../public/images/icon-check.svg" />
+        <button v-if="isDark" class="" :class="selected ? 'btn-check' : 'btn-dark '" @click="toggle()">
+            <img v-if="selected" src="../../public/images/icon-check.svg" />
+        </button>
+
+        <button v-else :class="selected ? 'btn-check' : 'btn-light '" @click="toggle()">
+            <img v-if="selected" src="../../public/images/icon-check.svg" />
         </button>
     </div>
 
-    <div class="title" >
-        <p  :class="todo.completed ?  'text-decoration-line-through' : ''"><span :class="isDark ? 'text-lightGrayishBlue':'text-veryDarkGrayishBlue'">{{ todo.text }}</span></p>
+    <div class="title text-bold" :class="isDark? 'text-veryLightGrayBlue' : 'text-veryDarkGrayishBlue'" >
+        <p :class="selected ?  'text-decoration-line-through' : ''">{{ todo.text }}</p>
     </div>
     <div class="btn-del">
         <button @click="handleRemove(todo.id)">
@@ -50,37 +54,37 @@ const toggle = () =>{
     display: flex;
     align-items: center;
     height: 50px;
-    width: 80px;
+    width: 70px;
+    margin-right:0.5rem ;
 
 }
 
 .btn-del {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    width: 80px;
-    margin-right: -40px;
+   
+    height: 20px;
+    width: 70px;
 
 }
 
 .title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-left: -10px;
-    width: 100%;
+    font-size: 1rem;
+    
+    width: 700px;
 
 }
 
 button {
-    width: 24px;
-    height: 24px;
-    border-radius: 24px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
 
 }
 
 img {
     width: 16px;
-    margin-bottom: 13px;
+    height: 16px;
+  
+   
 }
 
 .btn-check {
@@ -88,21 +92,32 @@ img {
 }
 
 
-.btn-unchecked {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%; /* Botão circular */
-  border: 1px solid hsl(236, 9%, 61%); /* Cor inicial da borda */
-  background: transparent; /* Fundo transparente */
-  position: relative;
-  overflow: hidden; /* Garante que o gradiente não extrapole */
-  transition: border-color 0.3s ease, background 0.3s ease; /* Suave transição */
+.btn-dark {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    border: 0.2px solid hsl(233, 14%, 35%);
 }
 
-.btn-unchecked:hover {
-  border: 2px solid transparent; /* Faz a borda "desaparecer" momentaneamente */
-  border-color: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%)); /* Gradiente */
-  background-origin: border-box; /* Aplica o gradiente na borda */
-  background-clip: padding-box, border-box; /* O gradiente aparece na borda */
+.btn-light {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    border: 0.2px solid hsl(236, 9%, 61%);
+}
+
+@media (min-width: 890px) {
+ .btn{
+    margin-right: 0;
+   
+ }
+ .title {
+    font-size: 1.2rem;
+    width: 700px;
+
+}
+
+
+
 }
 </style>

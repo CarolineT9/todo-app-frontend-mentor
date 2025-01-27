@@ -2,14 +2,13 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useTheme } from 'vuetify';
 import Todo from './components/Todo.vue';
-
 const theme = useTheme();
-
+const isDark = computed(() => theme.global.current.value.dark);
 const currentImage = ref('');
 const icon = ref('');
 const windowWidth = ref(window.innerWidth);
 
-const isDark = computed(() => theme.global.current.value.dark);
+
 const isMobile = computed(() => windowWidth.value < 768);
 
 const updateImg = () => {
@@ -56,7 +55,7 @@ onUnmounted(() => {
     </div>
     <div class="todo-area">
       <div class="todo">
-        <h1 :class="isDark ? 'lightGrayishHover' : 'text-veryDarkGrayishBlue'">
+        <h1 :class="isDark ? 'text-lightGrayishHover' : 'text-veryLightGray'">
           TODO
         </h1>
         <img 
@@ -91,32 +90,43 @@ main {
 }
 
 img {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   margin-top: .1rem;
 }
 
 h1 {
-  font-size: 1.5rem;
-  letter-spacing: 1rem;
+  font-size: 1.7rem;
+  letter-spacing: 0.5rem;
+  font-weight: bold;
 }
 
 .todo-area {
-  width: 90%;
+  width: 85%;
+  min-width: 250px;
   margin: auto;
   position: relative;
-  top: -250px;
+  top: -310px;
   
 }
 
 .todo {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 35px;
+  
 }
 
 .img-background {
   width: 100%;
   height: 230px;
   margin-bottom: 130px;
+}
+@media (min-width: 890px) {
+  .todo-area{
+    width: 50%;
+    
+    max-width: 800px;
+  }
 }
 </style>
