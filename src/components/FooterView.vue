@@ -6,7 +6,7 @@ const isDark = computed(() => theme.global.current.value.dark);
 </script>
 <template>
     <div :class="isDark ? 'bg-veryDarkBlue' : 'bg-veryLightGrayBlue'">
-         <p class="text-center ">Drag and drop to reorder list.</p> 
+         
     </div>
       
     
