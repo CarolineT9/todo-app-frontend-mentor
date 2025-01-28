@@ -51,7 +51,7 @@ const handleRemove = (id) => {
         </button>
     </div>
 
-    <div class="title text-bold" :class="isDark ? 'text-veryLightGrayBlue' : 'text-veryDarkGrayishBlue'">
+    <div class="title text-bold" :class="isDark ? 'text-lightGrayishBlue' : 'text-veryDarkGrayishBlue'">
         <p :class="selected ? 'text-decoration-line-through' : ''">{{ todo.text }}</p>
     </div>
     <div class="btn-del">
