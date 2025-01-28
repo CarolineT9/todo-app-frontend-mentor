@@ -2,12 +2,13 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useTheme } from 'vuetify';
 import Todo from './components/Todo.vue';
+import FooterView from './components/FooterView.vue';
+
 const theme = useTheme();
 const isDark = computed(() => theme.global.current.value.dark);
 const currentImage = ref('');
 const icon = ref('');
 const windowWidth = ref(window.innerWidth);
-
 
 const isMobile = computed(() => windowWidth.value < 768);
 
@@ -21,16 +22,13 @@ const updateImg = () => {
   }
 };
 
-
 const toggleTheme = () => {
   theme.global.name.value = isDark.value ? 'myCustomLightTheme' : 'myCustomDarkTheme';
 };
 
-
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth;
 };
-
 
 watch([isDark, isMobile], updateImg, { immediate: true });
 
@@ -45,38 +43,36 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main :class="isDark ? 'bg-veryDarkBlue': 'bg-veryLightGrayBlue'">
+  <main :class="isDark ? 'bg-veryDarkBlue' : 'bg-veryLightGrayBlue'">
     <div class="background-container">
-      <img 
-        :src="currentImage" 
-        alt="Background"
-        class="img-background"
-      />
+      <img :src="currentImage" alt="Background" class="img-background" />
     </div>
+
     <div class="todo-area">
-      <div class="todo">
+      <div class="title">
         <h1 :class="isDark ? 'text-lightGrayishHover' : 'text-veryLightGray'">
           TODO
         </h1>
-        <img 
-          @click="toggleTheme" 
-          :src="icon" 
-          alt="Toggle Theme Icon" 
-          class="cursor-pointer" 
-        />
+        <img @click="toggleTheme" :src="icon" alt="Toggle Theme Icon" class="cursor-pointer" />
 
-        
       </div>
       <Todo></Todo>
+      <p class="text-center mt-5" :class="isDark ? 'text-darkGrayishBlue' : 'text-darkGrayishBlue'">Drag and drop to reorder list.</p> 
     </div>
+   
   </main>
+
+  
+    
+  
+
 </template>
 
 <style scoped>
 main {
-  width: 100vw;
+  width: 100dvw;
+  height: 100dvh;
   margin: 0;
-  height: 100vh;
   transition: background-color 0.3s ease;
 }
 
@@ -107,14 +103,15 @@ h1 {
   margin: auto;
   position: relative;
   top: -310px;
-  
+
 }
 
-.todo {
+.title {
   display: flex;
   justify-content: space-between;
   margin-bottom: 35px;
-  
+
+
 }
 
 .img-background {
@@ -122,11 +119,16 @@ h1 {
   height: 230px;
   margin-bottom: 130px;
 }
+p{
+  font-size: 1rem;
+  margin-left: -40px;
+}
 @media (min-width: 890px) {
-  .todo-area{
+  .todo-area {
     width: 50%;
-    
+
     max-width: 800px;
   }
+ 
 }
 </style>

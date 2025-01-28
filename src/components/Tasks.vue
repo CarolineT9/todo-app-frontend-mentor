@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits,computed } from 'vue';
+import { ref, defineEmits, computed } from 'vue';
 import { useTheme } from 'vuetify';
 const theme = useTheme();
 const isDark = computed(() => theme.global.current.value.dark);
@@ -9,36 +9,53 @@ const props = defineProps({
         required: true
     }
 });
-const emit = defineEmits(['update-todo', 'remove-todo', 'toggleomplete']); // Declare an emit for updating todo
-const selected = ref(false);
+const emit = defineEmits(['update-todo', 'remove-todo', 'toggle-complete']); // Declare an emit for updating todo
+const selected = computed({
 
-const toggle = () =>{
-    selected.value = !selected.value
-    emit('update-todo', { ...props.todo, completed: !props.todo.completed });
+    get() {
+
+        return props.todo.completed;
+
+    },
+
+    set(value) {
+
+        emit('toggle-complete', props.todo.id); // Emitindo o evento corretamente
+
+    }
+
+});
+
+
+const toggle = () => {
+
+    // Alterna o estado localmente, se necessário
+
+    emit('toggle-complete', props.todo.id);
+
 };
-
-const handleRemove = ( id)=>{
+const handleRemove = (id) => {
     emit('remove-todo', id)
 };
 </script>
 
 <template>
-  
+
     <div class="btn">
-        <button v-if="isDark" class="" :class="selected ? 'btn-check' : 'btn-dark '" @click="toggle()">
+        <button aria-label="Toggle buttom" v-if="isDark" class="" :class="selected ? 'btn-check' : 'btn-dark '" @click="toggle()">
             <img v-if="selected" src="../../public/images/icon-check.svg" />
         </button>
 
-        <button v-else :class="selected ? 'btn-check' : 'btn-light '" @click="toggle()">
+        <button aria-label="Toggle buttom" v-else :class="selected ? 'btn-check' : 'btn-light '" @click="toggle()">
             <img v-if="selected" src="../../public/images/icon-check.svg" />
         </button>
     </div>
 
-    <div class="title text-bold" :class="isDark? 'text-veryLightGrayBlue' : 'text-veryDarkGrayishBlue'" >
-        <p :class="selected ?  'text-decoration-line-through' : ''">{{ todo.text }}</p>
+    <div class="title text-bold" :class="isDark ? 'text-veryLightGrayBlue' : 'text-veryDarkGrayishBlue'">
+        <p :class="selected ? 'text-decoration-line-through' : ''">{{ todo.text }}</p>
     </div>
     <div class="btn-del">
-        <button @click="handleRemove(todo.id)">
+        <button aria-label="Remove" @click="handleRemove(todo.id)">
             <img src="../../public/images/icon-cross.svg" />
         </button>
     </div>
@@ -55,12 +72,12 @@ const handleRemove = ( id)=>{
     align-items: center;
     height: 50px;
     width: 70px;
-    margin-right:0.5rem ;
+    margin-right: 0.5rem;
 
 }
 
 .btn-del {
-   
+
     height: 20px;
     width: 70px;
 
@@ -68,7 +85,7 @@ const handleRemove = ( id)=>{
 
 .title {
     font-size: 1rem;
-    
+
     width: 700px;
 
 }
@@ -83,8 +100,8 @@ button {
 img {
     width: 16px;
     height: 16px;
-  
-   
+
+
 }
 
 .btn-check {
@@ -107,15 +124,16 @@ img {
 }
 
 @media (min-width: 890px) {
- .btn{
-    margin-right: 0;
-   
- }
- .title {
-    font-size: 1.2rem;
-    width: 700px;
+    .btn {
+        margin-right: 0;
 
-}
+    }
+
+    .title {
+        font-size: 1.2rem;
+        width: 700px;
+
+    }
 
 
 
