@@ -45,7 +45,7 @@ onUnmounted(() => {
 <template>
   <main :class="isDark ? 'bg-veryDarkBlue' : 'bg-veryLightGrayBlue'">
     <div class="background-container">
-      <img :src="currentImage" alt="Background" class="img-background"  />
+      <img :src="currentImage" alt="Background" class="img-background" />
     </div>
 
     <div class="todo-area">
@@ -128,7 +128,22 @@ p{
     width: 50%;
 
     max-width: 800px;
+    margin-top: 2rem;
   }
+  h1{
+    font-size: 2.5rem;
+  }
+  img {
+  width: 35px;
+  height: 35px;
+  margin-top: .5rem;
+}
+.img-background {
+ 
+  width: 100%;
+  height: 300px;
+  margin-bottom: 60px;
+}
  
 }
 </style>

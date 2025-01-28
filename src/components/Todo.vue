@@ -5,7 +5,7 @@ import { useTheme } from 'vuetify';
 const theme = useTheme();
 const task = ref('');
 const todos = ref([]);
-const filter = ref('all'); // Estado inicial do filtro
+const filter = ref('all');
 const isDark = computed(() => theme.global.current.value.dark);
 let genId = 1;
 
@@ -18,7 +18,7 @@ const addTodo = () => {
 const filteredTodos = computed(() => {
     if (filter.value === 'all') return todos.value;
     if (filter.value === 'active') return todos.value.filter(todo => !todo.completed);
-    if (filter.value === 'completed') return todos.value.filter(todo => todo.completed); // Tarefas completas
+    if (filter.value === 'completed') return todos.value.filter(todo => todo.completed); 
 });
 
 const removeTodo = id => {
@@ -28,7 +28,7 @@ const removeTodo = id => {
 const toggleComplete = id => {
     const task = todos.value.find(task => task.id === id);
     if (task) {
-        task.completed = !task.completed; // Alterna o estado completed
+        task.completed = !task.completed; 
     }
 };
 const clearCompleted = () => {
