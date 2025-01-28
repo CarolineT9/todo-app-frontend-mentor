@@ -45,7 +45,7 @@ onUnmounted(() => {
 <template>
   <main :class="isDark ? 'bg-veryDarkBlue' : 'bg-veryLightGrayBlue'">
     <div class="background-container">
-      <img :src="currentImage" alt="Background" class="img-background" />
+      <img :src="currentImage" alt="Background" class="img-background"  />
     </div>
 
     <div class="todo-area">
@@ -57,7 +57,7 @@ onUnmounted(() => {
 
       </div>
       <Todo></Todo>
-      <p class="text-center mt-5" :class="isDark ? 'text-darkGrayishBlue' : 'text-darkGrayishBlue'">Drag and drop to reorder list.</p> 
+      <p class="text-center mt-10" :class="isDark ? 'text-darkGrayishBlue' : 'text-darkGrayishBlue'">Drag and drop to reorder list.</p> 
     </div>
    
   </main>
