@@ -28,8 +28,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://www.frontendmentor.io/solutions/--responsive-layout-flexcss-darkmodevuetify-componentsvue-8F-Y693rOP)
-- Live Site URL: [Add live site URL here](https://todo-app-frontend-mentor-rho.vercel.app/)
+- Solution URL: [Frontend Mentor](https://www.frontendmentor.io/solutions/--responsive-layout-flexcss-darkmodevuetify-componentsvue-8F-Y693rOP)
+- Live Site URL: [Vercel Link](https://todo-app-frontend-mentor-rho.vercel.app/)
 
 
 
